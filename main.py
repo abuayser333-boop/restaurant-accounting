@@ -6,64 +6,68 @@ main.py - نقطة الدخول الرئيسية
 import os
 import sys
 
-# إضافة مجلد المشروع لمسار البحث
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from database import initialize_database
-from modules.invoices import InvoicesManager
-from modules.expenses import ExpensesManager
-from modules.inventory import InventoryManager
-from modules.reports import ReportsManager
+from modules.invoices     import InvoicesManager
+from modules.expenses     import ExpensesManager
+from modules.inventory    import InventoryManager
+from modules.reports      import ReportsManager
+from modules.breakeven    import BreakEvenManager
+from modules.depreciation import DepreciationManager
 
 
 def print_header():
-    """طباعة ترويسة البرنامج"""
-    print("\n" + "="*50)
+    print("\n" + "="*52)
     print("       🍽️  نظام محاسبة المطاعم")
     print("         Restaurant Accounting System")
-    print("              الإصدار 1.0.0")
-    print("="*50)
+    print("              الإصدار 1.1.0")
+    print("="*52)
 
 
 def main_menu():
-    """القائمة الرئيسية للبرنامج"""
-    
-    # تهيئة قاعدة البيانات عند أول تشغيل
     initialize_database()
-    
-    # إنشاء مديري الوحدات
-    invoices_manager = InvoicesManager()
-    expenses_manager = ExpensesManager()
-    inventory_manager = InventoryManager()
-    reports_manager = ReportsManager()
-    
+
+    invoices_mgr    = InvoicesManager()
+    expenses_mgr    = ExpensesManager()
+    inventory_mgr   = InventoryManager()
+    reports_mgr     = ReportsManager()
+    breakeven_mgr   = BreakEvenManager()
+    depreciation_mgr = DepreciationManager()
+
     while True:
         print_header()
         print("\n  الرجاء اختيار أحد الخيارات:")
-        print("  " + "-"*35)
+        print("  " + "-"*40)
         print("  1. 📄 إدارة الفواتير (المبيعات)")
         print("  2. 💸 إدارة المصروفات")
         print("  3. 📦 إدارة المخزون")
         print("  4. 📊 التقارير المالية")
-        print("  5. 🚪 الخروج")
-        print("  " + "-"*35)
-        
-        choice = input("  اختر رقم القائمة (1-5): ").strip()
-        
+        print("  5. ⚖️  نقطة التعادل (Break-Even)")
+        print("  6. 📉 الاستهلاك - الرسبي (Depreciation)")
+        print("  7. 🚪 الخروج")
+        print("  " + "-"*40)
+
+        choice = input("  اختر رقم القائمة (1-7): ").strip()
+
         if choice == "1":
-            invoices_manager.run()
+            invoices_mgr.run()
         elif choice == "2":
-            expenses_manager.run()
+            expenses_mgr.run()
         elif choice == "3":
-            inventory_manager.run()
+            inventory_mgr.run()
         elif choice == "4":
-            reports_manager.run()
+            reports_mgr.run()
         elif choice == "5":
+            breakeven_mgr.run()
+        elif choice == "6":
+            depreciation_mgr.run()
+        elif choice == "7":
             print("\n  👋 شكراً لاستخدام نظام محاسبة المطاعم.")
             print("  جميع الحقوق محفوظة © 2024\n")
             sys.exit(0)
         else:
-            print("\n  ❌ اختيار غير صحيح. الرجاء إدخال رقم من 1 إلى 5.")
+            print("\n  ❌ اختيار غير صحيح. الرجاء إدخال رقم من 1 إلى 7.")
 
 
 if __name__ == "__main__":
